@@ -12,7 +12,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   shared_preferences: ^2.5.3
   http: ^1.6.0
-  supabase_flutter: ^2.12.0
+  # supabase_flutter: ^2.12.0  # ← DISABLED untuk test
 
 dev_dependencies:
   flutter_test:
@@ -22,6 +22,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-# FORCE app_links version untuk fix build error
-dependency_overrides:
-  app_links: 6.4.1
+# Hapus dependency_overrides karena tidak perlu lagi
+# dependency_overrides:
+#   app_links: 6.4.1
