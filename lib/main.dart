@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  run.App(const HamTaskApp());
+  runApp(const HamTaskApp());
 }
 
 class HamTaskApp extends StatelessWidget {
@@ -51,7 +51,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('📋 Ham Task Force', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('📋 Ham Task Force', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.orange,
         centerTitle: true,
       ),
