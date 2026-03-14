@@ -19,11 +19,20 @@ android {
 
     buildTypes {
         getByName("release") {
-            // Kita matikan dua-duanya biar nggak protes lagi si Gradle
             isMinifyEnabled = false
-            isShrinkResources = false 
+            isShrinkResources = false
             signingConfig = signingConfigs.getByName("debug")
         }
+    }
+
+    // INI OBATNYA BIAR GAK BERANTEM
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = "11"
     }
 }
 
