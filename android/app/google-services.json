@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "120817815537",
+    "project_id": "nurdaily-ham",
+    "storage_bucket": "nurdaily-ham.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120817815537:android:ea835dde4dfe744d53be50",
+        "android_client_info": {
+          "package_name": "com.example.aplikasi_pertama"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2rGkwICuS7lkNC2VeIA2vwCwFvyEIFfc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
