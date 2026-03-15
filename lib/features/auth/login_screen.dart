@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
-          mainAxisAlignment: MainType.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.mosque, size: 80, color: AppColors.primary),
             const SizedBox(height: 30),

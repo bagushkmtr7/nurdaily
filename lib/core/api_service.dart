@@ -12,7 +12,7 @@ class ApiService {
   static const String _baseUrlQuran = 'https://equran.id/api/v2';
   static const String _baseUrlPrayer = 'https://api.aladhan.com/v1';
 
-  // --- AUTH (FIREBASE) ---
+  // --- AUTH ---
   Future<UserCredential> signIn(String email, String password) async {
     return await _auth.signInWithEmailAndPassword(email: email, password: password);
   }
@@ -21,21 +21,18 @@ class ApiService {
     await _auth.signOut();
   }
 
-  // --- PENGUMUMAN (FIRESTORE) ---
+  // --- PENGUMUMAN ---
   Future<List<Map<String, dynamic>>> getAnnouncements() async {
     try {
-      // Ambil data dari Firestore, urutkan berdasarkan waktu buat
       QuerySnapshot snapshot = await _db.collection('announcements')
           .orderBy('created_at', descending: true)
           .get();
-          
       return snapshot.docs.map((doc) => {
         'id': doc.id,
         'title': doc['title'] ?? '',
         'content': doc['content'] ?? '',
       }).toList();
     } catch (e) {
-      print('Error Firestore: $e');
       return [];
     }
   }
@@ -48,19 +45,25 @@ class ApiService {
     });
   }
 
-  // --- QURAN & PRAYER (HTTP) ---
+  // --- QURAN (Ditambahin biar gak error lagi) ---
   Future<List<Surah>> getSurahs() async {
     final res = await http.get(Uri.parse('$_baseUrlQuran/surat'));
     if (res.statusCode == 200) {
       List data = json.decode(res.body)['data'];
       return data.map((s) => Surah.fromJson(s)).toList();
     }
-    throw Exception('Gagal ambil data');
+    throw Exception('Gagal');
+  }
+
+  Future<Map<String, dynamic>> getSurahDetail(int nomor) async {
+    final res = await http.get(Uri.parse('$_baseUrlQuran/surat/$nomor'));
+    if (res.statusCode == 200) return json.decode(res.body)['data'];
+    throw Exception('Gagal');
   }
 
   Future<PrayerTime> getPrayerTimes(String city) async {
     final res = await http.get(Uri.parse('$_baseUrlPrayer/timingsByCity?city=$city&country=Indonesia&method=2'));
     if (res.statusCode == 200) return PrayerTime.fromJson(json.decode(res.body)['data']['timings']);
-    throw Exception('Gagal ambil jadwal');
+    throw Exception('Gagal');
   }
 }
