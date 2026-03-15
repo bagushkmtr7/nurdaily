@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'core/constants.dart';
 import 'features/prayer/prayer_screen.dart';
 import 'features/quran/quran_screen.dart';
 import 'features/auth/login_screen.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() async {
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+  } catch (e) {
+    print("Firebase Error: $e");
+  }
   runApp(const NurDailyApp());
 }
 
@@ -16,7 +22,10 @@ class NurDailyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'NurDaily',
-      theme: AppTheme.light,
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+        useMaterial3: true,
+      ),
       home: const MainNavigation(),
     );
   }
@@ -31,22 +40,22 @@ class MainNavigation extends StatefulWidget {
 
 class _MainNavigationState extends State<MainNavigation> {
   late int _selectedIndex;
+  final List<Widget> _screens = [
+    const PrayerScreen(),
+    const QuranScreen(),
+    const LoginScreen(),
+  ];
+
   @override
   void initState() {
     super.initState();
     _selectedIndex = widget.initialIndex;
   }
 
-  static const List<Widget> _pages = [
-    PrayerScreen(),
-    QuranScreen(),
-    LoginScreen(),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) => setState(() => _selectedIndex = index),

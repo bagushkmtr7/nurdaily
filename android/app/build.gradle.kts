@@ -10,6 +10,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        multiDexEnabled = true
         applicationId = "com.example.aplikasi_pertama"
         // Kita naikkan ke 23 biar Firestore gak ngambek
         minSdk = 23
