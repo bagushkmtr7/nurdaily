@@ -11,7 +11,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.aplikasi_pertama"
-        minSdk = 21
+        // Kita naikkan ke 23 biar Firestore gak ngambek
+        minSdk = 23
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -25,7 +26,6 @@ android {
         }
     }
 
-    // INI OBATNYA BIAR GAK BERANTEM
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
