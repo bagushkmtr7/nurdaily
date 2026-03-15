@@ -10,7 +10,21 @@ class QuranScreen extends StatefulWidget {
 
 class _QuranScreenState extends State<QuranScreen> {
   final DbHelper _dbHelper = DbHelper();
-  
+  late Future<List<Map<String, dynamic>>> _surahFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _surahFuture = _getSurahData();
+  }
+
+  Future<List<Map<String, dynamic>>> _getSurahData() async {
+    // Kita panggil database sura-search.db
+    final db = await _dbHelper.getSuraSearchDb();
+    // PAKAI TABEL 'data' SESUAI SCREENSHOT LU
+    return await db.query('data');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,42 +37,45 @@ class _QuranScreenState extends State<QuranScreen> {
         elevation: 0,
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: _dbHelper.getSurahList(),
+        future: _surahFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator(color: Colors.teal));
           }
-          if (snapshot.hasError) return Center(child: Text('Error: ${snapshot.error}'));
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
 
           final surahs = snapshot.data ?? [];
 
           return ListView.separated(
+            padding: const EdgeInsets.symmetric(vertical: 10),
             itemCount: surahs.length,
-            separatorBuilder: (context, index) => Divider(height: 1, color: Colors.grey.shade200),
+            separatorBuilder: (context, index) => Divider(height: 1, color: Colors.grey.shade100),
             itemBuilder: (context, index) {
               final surah = surahs[index];
               return ListTile(
                 leading: Container(
-                  width: 40,
-                  height: 40,
+                  width: 35,
+                  height: 35,
                   decoration: BoxDecoration(
-                    color: Colors.teal.shade50,
-                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.teal.withOpacity(0.1),
+                    shape: BoxShape.circle,
                   ),
                   alignment: Alignment.center,
-                  child: Text('${surah['id']}', style: const TextStyle(color: Colors.teal, fontWeight: FontWeight.bold)),
+                  child: Text('${surah['id']}', style: const TextStyle(color: Colors.teal, fontWeight: FontWeight.bold, fontSize: 12)),
                 ),
                 title: Text(
-                  surah['latin'] ?? 'Surah',
+                  surah['latin'] ?? '',
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
-                subtitle: Text('${surah['location']} • ${surah['ayah']} Ayat', style: TextStyle(color: Colors.grey.shade600)),
+                subtitle: Text('${surah['location']} • ${surah['ayah']} Ayat', style: const TextStyle(fontSize: 12)),
                 trailing: Text(
                   surah['arabic'] ?? '',
-                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.teal),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.teal),
                 ),
                 onTap: () {
-                  // Nanti kita buat navigasi ke detail ayat
+                  // Navigasi ke detail ayat akan kita buat setelah ini
                 },
               );
             },
