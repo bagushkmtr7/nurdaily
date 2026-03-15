@@ -1,17 +1,43 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+enum UserRole { user, admin, moderator, takmir }
+
 class UserModel {
-  final String id;
-  final String name;
+  final String uid;
   final String email;
-  final String role; // 'admin' atau 'user'
+  final UserRole role;
+  final bool isBanned;
+  final DateTime? lastLogin;
+  final String? deviceModel;
 
-  UserModel({required this.id, required this.name, required this.email, required this.role});
+  UserModel({
+    required this.uid,
+    required this.email,
+    this.role = UserRole.user,
+    this.isBanned = false,
+    this.lastLogin,
+    this.deviceModel,
+  });
 
-  factory UserModel.fromFakeLogin(String email) {
+  factory UserModel.fromFirestore(DocumentSnapshot doc) {
+    Map data = doc.data() as Map<String, dynamic>;
     return UserModel(
-      id: '1',
-      name: 'Takmir Masjid Ham',
-      email: email,
-      role: 'admin',
+      uid: doc.id,
+      email: data['email'] ?? '',
+      role: UserRole.values.firstWhere((e) => e.toString() == 'UserRole.${data['role']}', orElse: () => UserRole.user),
+      isBanned: data['isBanned'] ?? false,
+      lastLogin: (data['last_login'] as Timestamp?)?.toDate(),
+      deviceModel: data['device_model'],
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'email': email,
+      'role': role.name,
+      'isBanned': isBanned,
+      'last_login': lastLogin,
+      'device_model': deviceModel,
+    };
   }
 }

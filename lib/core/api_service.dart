@@ -14,6 +14,7 @@ class ApiService {
 
   // --- AUTH ---
   Future<UserCredential> signIn(String email, String password) async {
+  Future<void> _updateUserStats(String uid) async { await _db.collection("users").doc(uid).set({"last_login": FieldValue.serverTimestamp(), "email": _auth.currentUser?.email}, SetOptions(merge: true)); }
     return await _auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
