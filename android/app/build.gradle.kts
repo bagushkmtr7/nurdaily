@@ -7,16 +7,15 @@ plugins {
 
 android {
     namespace = "com.example.aplikasi_pertama"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
-        multiDexEnabled = true
         applicationId = "com.example.aplikasi_pertama"
-        // Kita naikkan ke 23 biar Firestore gak ngambek
         minSdk = 23
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+        multiDexEnabled = true
     }
 
     buildTypes {

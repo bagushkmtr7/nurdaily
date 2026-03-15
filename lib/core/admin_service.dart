@@ -9,7 +9,6 @@ class AdminService {
     final users = await _db.collection('users').get();
     final announcements = await _db.collection('announcements').get();
     
-    // Logic sederhana buat DAU (User login hari ini)
     final today = DateTime.now();
     final dauCount = users.docs.where((doc) {
       final lastLogin = (doc.data()['last_login'] as Timestamp?)?.toDate();
@@ -36,11 +35,6 @@ class AdminService {
     await _db.collection('users').doc(uid).update({'isBanned': !currentStatus});
   }
 
-  Future<void> updateUserRole(String uid, UserRole newRole) async {
-    await _db.collection('users').doc(uid).update({'role': newRole.name});
-  }
-}
-
   // --- NOTIFICATION BROADCAST ---
   Future<void> sendBroadcastNotification(String title, String body) async {
     await _db.collection('notifications').add({
@@ -50,3 +44,4 @@ class AdminService {
       'status': 'sent',
     });
   }
+}
