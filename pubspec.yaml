@@ -1,5 +1,5 @@
 name: nurdaily
-description: "A new Flutter project."
+description: "A new Muslim app."
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -19,16 +19,18 @@ dependencies:
   firebase_messaging: ^16.1.2
   flutter_local_notifications: ^19.5.0
   sqflite: ^2.4.1
-  path: any
+  path: 1.9.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
 
+dependency_overrides:
+  path: 1.9.0
+
 flutter:
   uses-material-design: true
-
   assets:
     - assets/images/imgmekah.png
     - assets/databases/alquran.db

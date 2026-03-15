@@ -15,36 +15,24 @@ class DbHelper {
     var databasesPath = await getDatabasesPath();
     var path = join(databasesPath, fileName);
 
-    // LOGIC BARU: Cek ukuran file. Kalau 0 atau gak ada, kita copy ulang.
-    bool exists = await databaseExists(path);
-    
-    if (!exists) {
-      print("Database $fileName belum ada, mulai menyalin...");
-      await _copyDatabase(fileName, path);
-    } else {
-      // Cek kalau-kalau filenya corrupt (ukurannya 0)
-      File f = File(path);
-      if (await f.length() == 0) {
-        print("Database $fileName kosong, menyalin ulang...");
-        await _copyDatabase(fileName, path);
-      }
+    // Paksa hapus file lama supaya bener-bener ke-update dari assets
+    if (await File(path).exists()) {
+      await deleteDatabase(path);
     }
 
-    return await openDatabase(path, readOnly: true);
-  }
-
-  Future<void> _copyDatabase(String fileName, String path) async {
     try {
       await Directory(dirname(path)).create(recursive: true);
       ByteData data = await rootBundle.load("assets/databases/$fileName");
       List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(path).writeAsBytes(bytes, flush: true);
-      print("Berhasil menyalin $fileName");
     } catch (e) {
       print("Gagal menyalin $fileName: $e");
     }
+
+    return await openDatabase(path, readOnly: true);
   }
 
+  // Getter masing-masing DB
   Future<Database> getSuraSearchDb() async => _suraSearchDb ??= await _initDatabase('sura-search.db');
   Future<Database> getAlquranDb() async => _alquranDb ??= await _initDatabase('alquran.db');
   Future<Database> getLatinDb() async => _latinDb ??= await _initDatabase('latin.db');
@@ -52,9 +40,9 @@ class DbHelper {
   Future<Database> getJalalaynDb() async => _jalalaynDb ??= await _initDatabase('jalalayn.db');
   Future<Database> getKataDb() async => _kataDb ??= await _initDatabase('kata.db');
 
+  // Ambil Daftar Surah dari tabel 'sura_search' (Sesuai foto 18669.jpg)
   Future<List<Map<String, dynamic>>> getSurahList() async {
     final db = await getSuraSearchDb();
-    // Berdasarkan screenshot lu, nama tabelnya 'data'
-    return await db.query('data');
+    return await db.query('sura_search');
   }
 }
