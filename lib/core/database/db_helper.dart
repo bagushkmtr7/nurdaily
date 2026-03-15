@@ -14,16 +14,24 @@ class DbHelper {
   Future<Database> _getDb(String fileName) async {
     var databasesPath = await getDatabasesPath();
     var path = join(databasesPath, fileName);
-    var exists = await databaseExists(path);
 
-    if (!exists) {
-      try {
-        await Directory(dirname(path)).create(recursive: true);
-      } catch (_) {}
-      ByteData data = await rootBundle.load(join("assets/databases", fileName));
+    // JURUS PAMUNGKAS: Hapus file lama di sistem HP supaya diganti yang baru dari assets
+    // Nanti kalau udah stabil, bagian 'delete' ini bisa kita hapus
+    if (await File(path).exists()) {
+      await deleteDatabase(path);
+    }
+
+    // Proses copy dari Assets ke HP
+    try {
+      await Directory(dirname(path)).create(recursive: true);
+      ByteData data = await rootBundle.load("assets/databases/$fileName");
       List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(path).writeAsBytes(bytes, flush: true);
+      print("Berhasil menyalin $fileName ke sistem.");
+    } catch (e) {
+      print("Gagal menyalin database: $e");
     }
+
     return await openDatabase(path, readOnly: true);
   }
 
@@ -34,20 +42,10 @@ class DbHelper {
   Future<Database> getJalalaynDb() async => _jalalaynDb ??= await _getDb('jalalayn.db');
   Future<Database> getKataDb() async => _kataDb ??= await _getDb('kata.db');
 
-  // Ambil Daftar Surah
+  // Fungsi ambil daftar surah
   Future<List<Map<String, dynamic>>> getSurahList() async {
     final db = await getSuraSearchDb();
+    // Berdasarkan screenshot lu, nama tabelnya adalah 'data'
     return await db.query('data');
-  }
-
-  // Ambil Tafsir Jalalayn untuk satu ayat tertentu
-  Future<String> getJalalayn(int suraId, int ayaId) async {
-    final db = await getJalalaynDb();
-    List<Map> results = await db.query(
-      'data', 
-      where: 'sura = ? AND aya = ?', 
-      whereArgs: [suraId, ayaId]
-    );
-    return results.isNotEmpty ? results.first['text'] : "Tafsir tidak ditemukan.";
   }
 }
