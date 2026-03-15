@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:ui'; // Wajib buat efek blur background
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-// Import halaman-halaman fitur lu
 import 'core/constants.dart';
 import 'features/prayer/prayer_screen.dart';
 import 'features/quran/quran_screen.dart';
@@ -35,14 +33,13 @@ class NurDailyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'NurDaily',
       theme: ThemeData(primarySwatch: Colors.teal, useMaterial3: true),
-      // HALAMAN PERTAMA KALI DIBUKA ADALAH HOME SCREEN
       home: const HomeScreen(), 
     );
   }
 }
 
 // ==========================================
-// 1. HALAMAN DEPAN (HOME SCREEN) - Sesuai Referensi Lu
+// 1. HOME SCREEN (MURNI TANPA FILTER BLUR)
 // ==========================================
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -53,21 +50,13 @@ class HomeScreen extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background Gambar Mekah Lu
+          // Background Murni (Sesuai editan lu)
           Image.asset(
             'assets/images/imgmekah.png',
             fit: BoxFit.cover,
           ),
           
-          // Efek Blur & Gelap
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
-            child: Container(
-              color: Colors.black.withOpacity(0.55),
-            ),
-          ),
-          
-          // Konten Tengah
+          // KONTEN TENGAH
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
@@ -85,19 +74,16 @@ class HomeScreen extends StatelessWidget {
                     const Icon(
                       Icons.menu_book,
                       size: 50,
-                      color: Color(0xFF4DB6AC), // Warna Teal
+                      color: Color(0xFF4DB6AC),
                     ),
                     const SizedBox(height: 60),
                     
-                    // Tombol-tombol Menu
                     _buildMenuButton(context, "BACA QUR'AN", () {
-                      // Masuk ke Menu Al-Qur'an (Index 1)
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainNavigation(initialIndex: 1)));
                     }),
                     _buildMenuButton(context, "TERAKHIR BACA", () {}),
                     _buildMenuButton(context, "PENCARIAN", () {}),
                     _buildMenuButton(context, "JADWAL SHOLAT", () {
-                      // Masuk ke Menu Jadwal Sholat (Index 0)
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainNavigation(initialIndex: 0)));
                     }),
                     _buildMenuButton(context, "PENGATURAN", () {}),
@@ -111,7 +97,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // Desain Tombol Kotak Transparan Garis Putih
   Widget _buildMenuButton(BuildContext context, String title, VoidCallback onTap) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
@@ -128,11 +113,7 @@ class HomeScreen extends StatelessWidget {
           ),
           child: Text(
             title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
+            style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
           ),
         ),
       ),
@@ -141,7 +122,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 // ==========================================
-// 2. NAVIGASI BAWAH (SETELAH MASUK MENU)
+// 2. NAVIGASI BAWAH 
 // ==========================================
 class MainNavigation extends StatefulWidget {
   final int initialIndex;
