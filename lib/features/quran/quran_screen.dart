@@ -13,10 +13,9 @@ class _QuranScreenState extends State<QuranScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Definisi Warna sesuai Gambar Referensi
-    const Color primaryGreen = Color(0xFF1B4D3E); // Hijau Tua AppBar
-    const Color goldText = Color(0xFFBCA37F);    // Warna cokelat/emas subtitle
-    const Color bgColor = Color(0xFFFDFBF8);     // Background krem halus
+    const Color primaryGreen = Color(0xFF1B4D3E);
+    const Color goldText = Color(0xFFBCA37F);
+    const Color bgColor = Color(0xFFFDFBF8);
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -24,7 +23,10 @@ class _QuranScreenState extends State<QuranScreen> {
         title: const Text('Baca Qur\'an', style: TextStyle(color: Colors.white, fontSize: 18)),
         backgroundColor: primaryGreen,
         elevation: 0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20), onPressed: () => Navigator.pop(context)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
         actions: [
           IconButton(icon: const Icon(Icons.search, color: Colors.white), onPressed: () {}),
           IconButton(icon: const Icon(Icons.playlist_play, color: Colors.white), onPressed: () {}),
@@ -33,17 +35,25 @@ class _QuranScreenState extends State<QuranScreen> {
       ),
       body: Column(
         children: [
-          // Tab Bar Dummy (biar mirip gambar)
+          // TAB BAR FIX: Pake Container buat garis bawah
           Container(
             color: primaryGreen,
-            child: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text('SURAH', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, border: Border(bottom: BorderSide(color: goldText, width: 3)))),
-                  Text('JUZ', style: TextStyle(color: Colors.white70)),
-                  Text('BOOKMARK', style: TextStyle(color: Colors.white70)),
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: goldText, width: 3)),
+                    ),
+                    child: const Text('SURAH', 
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
+                    ),
+                  ),
+                  const Text('JUZ', style: TextStyle(color: Colors.white70)),
+                  const Text('BOOKMARK', style: TextStyle(color: Colors.white70)),
                 ],
               ),
             ),
@@ -69,39 +79,33 @@ class _QuranScreenState extends State<QuranScreen> {
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
-                            // Icon Bintang Segi Delapan
-                            Transform.rotate(
-                              angle: 0.8,
-                              child: Icon(Icons.square, color: goldText.withOpacity(0.2), size: 30),
-                            ),
-                            const Icon(Icons.square, color: Colors.transparent, size: 30),
                             Icon(Icons.brightness_7_outlined, color: goldText, size: 40),
-                            Text('${surah['no']}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: primaryGreen)),
+                            Text('${surah['no']}', 
+                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: primaryGreen)
+                            ),
                           ],
                         ),
                       ),
                       title: Text(
                         '${surah['indonesia']}',
-                        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.black87),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       subtitle: Text(
                         '${surah['location'].toUpperCase()} | ${surah['total_verses']} AYAT',
-                        style: const TextStyle(color: goldText, fontSize: 11, fontWeight: FontWeight.w500),
+                        style: const TextStyle(color: goldText, fontSize: 11),
                       ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
                             '${surah['arabic']}',
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87, fontFamily: 'Arabic'),
+                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87),
                           ),
                           const SizedBox(width: 15),
                           const Icon(Icons.download_for_offline_outlined, color: Color(0xFF609966), size: 22),
                         ],
                       ),
-                      onTap: () {
-                        // TODO: Navigasi ke Detail
-                      },
+                      onTap: () {},
                     );
                   },
                 );
