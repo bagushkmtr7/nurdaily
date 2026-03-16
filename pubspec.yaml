@@ -11,33 +11,20 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   shared_preferences: ^2.5.3
-  http: ^1.6.0
-  pocketbase: ^0.23.2
-  firebase_core: ^4.5.0
-  firebase_auth: ^6.2.0
-  cloud_firestore: ^6.1.3
-  firebase_messaging: ^16.1.2
-  flutter_local_notifications: ^19.5.0
   sqflite: ^2.4.1
-  path: 1.9.0
-  google_fonts: ^6.2.1
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^5.0.0
-
-dependency_overrides:
   path: 1.9.0
 
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/imgmekah.png
     - assets/databases/alquran.db
     - assets/databases/latin.db
     - assets/databases/terjemahan.db
-    - assets/databases/jalalayn.db
-    - assets/databases/kata.db
     - assets/databases/sura-search.db
     - assets/databases/surah_info.db
+  fonts:
+    - family: Amiri
+      fonts:
+        - asset: assets/fonts/Amiri-Regular.ttf
+        - asset: assets/fonts/Amiri-Bold.ttf
+          weight: 700

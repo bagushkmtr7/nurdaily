@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../core/database/db_helper.dart';
 
 class QuranDetailScreen extends StatelessWidget {
@@ -12,7 +11,6 @@ class QuranDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final DbHelper dbHelper = DbHelper();
     const Color primaryGreen = Color(0xFF1B4D3E);
-    const Color latinColor = Color(0xFF358B8B); 
     const Color goldColor = Color(0xFFBCA37F);
 
     return Scaffold(
@@ -21,7 +19,6 @@ class QuranDetailScreen extends StatelessWidget {
         title: Text(suraName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
         backgroundColor: primaryGreen,
         foregroundColor: Colors.white,
-        elevation: 0,
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: dbHelper.getSurahDetail(suraId),
@@ -48,10 +45,11 @@ class QuranDetailScreen extends StatelessWidget {
                           child: Text(
                             ayat['arabic'],
                             textAlign: TextAlign.right,
-                            style: GoogleFonts.amiri(
-                              fontSize: 26,
+                            style: const TextStyle(
+                              fontFamily: 'Amiri', // PAKAI FONT LOKAL
+                              fontSize: 28,
                               fontWeight: FontWeight.bold,
-                              height: 1.8,
+                              height: 2.0,
                               color: Colors.black87,
                             ),
                           ),
@@ -59,23 +57,9 @@ class QuranDetailScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    Text(
-                      ayat['latin'],
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 14,
-                        color: latinColor,
-                        height: 1.5,
-                      ),
-                    ),
+                    Text(ayat['latin'], style: const TextStyle(fontSize: 14, color: Color(0xFF358B8B))),
                     const SizedBox(height: 10),
-                    Text(
-                      ayat['translation'],
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.black54,
-                        height: 1.5,
-                      ),
-                    ),
+                    Text(ayat['translation'], style: const TextStyle(fontSize: 14, color: Colors.black54)),
                   ],
                 ),
               );
